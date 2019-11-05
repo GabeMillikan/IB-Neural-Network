@@ -14,6 +14,17 @@ class matrix:
     printed_string+="]"
     return printed_string
 
+  def create_from_shape(shape): #not a proper member of an instance
+    #shape is in as in math, shape[0] is height and shape[1] is width
+    data = []
+    for y in range(shape[0]):
+        new_r = []
+        for x in range(shape[1]):
+            new_r.append(0)
+        data.append(new_r)
+    return matrix(data)
+    
+
   def get_shape(self):
     height = len(self.data)
     width = len(self.data[0])
@@ -34,31 +45,36 @@ class matrix:
         new_row = []
         
         for x in range(new_width):
-            
             c = 0
+            
             for z in range(my_width):
                 c += self.data[y][z] * other_matrix.data[z][x]
+                
             new_row.append(c)
         new_data.append(new_row)
                 
     new_matrix = matrix(new_data)
     return new_matrix
 
-first_data = [
-  [2, 1, 4],
-  [0, 1, 1]
-]
 
-second_data = [
-  [6, 3, -1, 0],
-  [1, 1, 0, 4],
-  [-2, 5, 0, 2]
-]
+class NeuralNetwork:
+    def __init__(self, shape):
+        weight_data = []
+        bias_data = []
+        
+        layer_count = len(shape)
+        if layer_count < 2:
+            raise Exception("An input and output layer are required")
+        for i in range(layer_count-1):
+            weight_data.append(matrix.create_from_shape((shape[i], 1)).data)
+            bias_data.append(matrix.create_from_shape((shape[i], 1)).data)
+            
+        self.weights = matrix(weight_data)
+        self.biases = matrix(bias_data)
+        
+        print(self.weights)
+        print(self.biases)
 
-first_matrix = matrix(first_data)
-second_matrix = matrix(second_data)
 
-resulting_matrix = first_matrix.multiply(second_matrix)
-
-print(str(resulting_matrix))
+nn = NeuralNetwork((5, 2 ,3))
 
